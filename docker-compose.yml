@@ -29,10 +29,11 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ../certs:/etc/certs:ro                                   # SSL 인증서 (~/portfolio/certs/)
       - humanrm_static:/app/staticfiles                         # HumanRM Django 정적파일
       - humanrm_media:/app/media                                # HumanRM 미디어
-      - ../humanrm/frontend/dist:/usr/share/nginx/html          # 포트폴리오 메인 + HumanRM React
+      - ../main:/usr/share/nginx/html                            # 포트폴리오 메인
+      - ../humanrm/frontend/dist:/usr/share/nginx/humanrm-app   # HumanRM React SPA
       - ../jewelpro/frontend/dist:/usr/share/nginx/jewelpro-app # JewelPro React SPA
       - ../jewelpro:/usr/share/nginx/jewelry:ro                 # Jewelry 정적 HTML
     networks:
