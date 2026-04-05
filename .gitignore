@@ -1,0 +1,6 @@
+# 환경변수 (보안)
+.env
+
+# OS
+.DS_Store
+Thumbs.db

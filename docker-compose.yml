@@ -1,0 +1,49 @@
+# ─────────────────────────────────────────────────────────
+# Portfolio 인프라 — nginx + 공용 DB
+# 수정 시 working.md 먼저 확인할 것
+# ─────────────────────────────────────────────────────────
+
+services:
+
+  # ── 공용 PostgreSQL (모든 프로젝트 DB 통합) ──────────────
+  db:
+    image: postgres:16-alpine
+    container_name: portfolio-db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: postgres          # 관리용 기본 DB, 각 프로젝트 DB는 init.sql로 생성
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro   # 최초 1회 DB/유저 생성
+    networks:
+      - portfolio-net
+    restart: always
+
+  # ── 중앙 Nginx (포트 80/443 전담) ────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: portfolio-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - humanrm_static:/app/staticfiles                         # HumanRM Django 정적파일
+      - humanrm_media:/app/media                                # HumanRM 미디어
+      - ../humanrm/frontend/dist:/usr/share/nginx/html          # 포트폴리오 메인 + HumanRM React
+      - ../jewelpro/frontend/dist:/usr/share/nginx/jewelpro-app # JewelPro React SPA
+      - ../jewelpro:/usr/share/nginx/jewelry:ro                 # Jewelry 정적 HTML
+    networks:
+      - portfolio-net
+    restart: always
+
+networks:
+  portfolio-net:
+    external: true
+
+volumes:
+  postgres_data:
+  humanrm_static:
+  humanrm_media:
