@@ -16,6 +16,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro   # 최초 1회 DB/유저 생성
+    ports:
+      - "5432:5432"
     networks:
       - portfolio-net
     restart: always
