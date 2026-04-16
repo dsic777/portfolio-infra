@@ -38,6 +38,7 @@ services:
       - ../humanrm/frontend/dist:/usr/share/nginx/humanrm-app   # HumanRM React SPA
       - ../jewelpro/frontend/dist:/usr/share/nginx/jewelpro-app # JewelPro React SPA
       - ../jewelpro:/usr/share/nginx/jewelry:ro                 # Jewelry 정적 HTML
+      - ../malbeot2/frontend/dist:/usr/share/nginx/malbeot     # 말벗 모바일 React SPA
     networks:
       - portfolio-net
     restart: always
