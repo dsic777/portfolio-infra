@@ -32,10 +32,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ../certs:/etc/certs:ro                                   # SSL 인증서 (~/portfolio/certs/)
-      - humanrm_static:/app/staticfiles                         # HumanRM Django 정적파일
-      - humanrm_media:/app/media                                # HumanRM 미디어
       - ../main:/usr/share/nginx/html                            # 포트폴리오 메인
-      - ../humanrm/frontend/dist:/usr/share/nginx/humanrm-app   # HumanRM React SPA
       - ../jewelpro/frontend/dist:/usr/share/nginx/jewelpro-app # JewelPro React SPA
       - ../jewelpro:/usr/share/nginx/jewelry:ro                 # Jewelry 정적 HTML
       - ../malbeot2/frontend/dist:/usr/share/nginx/malbeot     # 말벗 모바일 React SPA
@@ -49,5 +46,3 @@ networks:
 
 volumes:
   postgres_data:
-  humanrm_static:
-  humanrm_media:
